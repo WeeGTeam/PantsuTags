@@ -10,7 +10,8 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value="run" />
+          <option value="hotRunJvm" />
+          <option value="--auto" />
         </list>
       </option>
       <option name="vmOptions" />
