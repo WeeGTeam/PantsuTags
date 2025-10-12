@@ -1,5 +1,7 @@
 package moe.mizugi.pantsutags
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.MaterialTheme
@@ -18,14 +20,19 @@ import org.koin.dsl.koinConfiguration
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun MobileApp() {
-    KoinMultiplatformApplication (config = koinConfiguration {
+    KoinMultiplatformApplication(config = koinConfiguration {
         modules(appModule)
-    }){
+    }) {
         val navController = rememberNavController()
 
         MaterialTheme {
             Column(modifier = Modifier.safeContentPadding()) {
-                NavHost(navController = navController, startDestination = GalleryDestination) {
+                NavHost(
+                    navController = navController,
+                    startDestination = GalleryDestination,
+                    enterTransition = { EnterTransition.None },
+                    exitTransition = { ExitTransition.None },
+                ) {
                     galleryRoutes()
                     importRoutes()
                 }
