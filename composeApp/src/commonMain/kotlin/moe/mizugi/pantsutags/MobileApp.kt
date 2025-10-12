@@ -28,8 +28,11 @@ fun MobileApp() {
     }) {
         val navController = rememberNavController()
         MaterialTheme {
-            Column(modifier = Modifier.safeContentPadding()) {
+            Column(
+                modifier = Modifier.safeContentPadding()
+            ) {
                 NavHost(
+                    modifier = Modifier.weight(1f),
                     navController = navController,
                     startDestination = GalleryDestination,
                     enterTransition = { EnterTransition.None },
