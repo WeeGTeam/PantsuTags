@@ -59,9 +59,11 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.ktor.client.android)
+            implementation(libs.multiplatform.paths)
         }
         appleMain.dependencies {
             implementation(libs.ktor.client.darwin)
+            implementation(libs.multiplatform.paths)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -79,7 +81,6 @@ kotlin {
             implementation(libs.filekit.dialogs.compose)
             implementation(libs.koin.compose)
             implementation(libs.kotlinx.serialization)
-            implementation(libs.multiplatform.paths)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -88,6 +89,9 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.ktor.client.java)
+            implementation(libs.multiplatform.paths)
+        }
+        wasmJsMain.dependencies {
         }
     }
 }
