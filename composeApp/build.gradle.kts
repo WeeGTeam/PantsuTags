@@ -20,7 +20,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -31,9 +31,9 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     jvm()
-    
+
     @OptIn(ExperimentalWasmDsl::class)
     wasmJs {
         outputModuleName.set("composeApp")
@@ -53,11 +53,15 @@ kotlin {
         }
         binaries.executable()
     }
-    
+
     sourceSets {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.android)
+        }
+        appleMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -69,8 +73,13 @@ kotlin {
             implementation(libs.androidx.lifecycle.viewmodelCompose)
             implementation(libs.androidx.lifecycle.runtimeCompose)
             implementation(libs.androidx.navigation.compose)
-            implementation(libs.kotlinx.serialization)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.ktor)
+            implementation(libs.filekit.coil)
+            implementation(libs.filekit.dialogs.compose)
             implementation(libs.koin.compose)
+            implementation(libs.kotlinx.serialization)
+            implementation(libs.multiplatform.paths)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -78,6 +87,7 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            implementation(libs.ktor.client.java)
         }
     }
 }

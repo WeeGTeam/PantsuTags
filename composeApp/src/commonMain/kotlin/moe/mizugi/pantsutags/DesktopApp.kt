@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import coil3.compose.setSingletonImageLoaderFactory
+import moe.mizugi.pantsutags.imageloader.imageLoaderFactory
 import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.gallery.galleryRoutes
 import moe.mizugi.pantsutags.presentation.import.importRoutes
@@ -24,6 +26,7 @@ import org.koin.dsl.koinConfiguration
 @OptIn(KoinExperimentalAPI::class)
 @Composable
 fun DesktopApp(onNavHostReady: suspend (NavController) -> Unit = {}) {
+    setSingletonImageLoaderFactory(::imageLoaderFactory)
     KoinMultiplatformApplication(config = koinConfiguration {
         modules(appModule)
     }) {
