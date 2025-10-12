@@ -15,23 +15,31 @@ import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.gallery.galleryRoutes
 import moe.mizugi.pantsutags.presentation.import.importRoutes
 import moe.mizugi.pantsutags.presentation.navigation.SideNavigation
+import org.koin.compose.KoinMultiplatformApplication
+import org.koin.core.annotation.KoinExperimentalAPI
+import org.koin.dsl.koinConfiguration
 
+@OptIn(KoinExperimentalAPI::class)
 @Composable
 fun DesktopApp(onNavHostReady: suspend (NavController) -> Unit = {}) {
-    val navController = rememberNavController()
-    MaterialTheme {
-        Row (modifier = Modifier.safeContentPadding()){
-            SideNavigation(navigateTo = { navController.navigate(it) }, Modifier.width(200.dp))
-            NavHost(
-                navController = navController,
-                startDestination = GalleryDestination,
-            ) {
-                galleryRoutes()
-                importRoutes()
+    KoinMultiplatformApplication (config = koinConfiguration {
+        modules(appModule)
+    }) {
+        val navController = rememberNavController()
+        MaterialTheme {
+            Row(modifier = Modifier.safeContentPadding()) {
+                SideNavigation(navigateTo = { navController.navigate(it) }, Modifier.width(200.dp))
+                NavHost(
+                    navController = navController,
+                    startDestination = GalleryDestination,
+                ) {
+                    galleryRoutes()
+                    importRoutes()
+                }
             }
         }
-    }
-    LaunchedEffect(navController) {
-        onNavHostReady(navController)
+        LaunchedEffect(navController) {
+            onNavHostReady(navController)
+        }
     }
 }
