@@ -4,20 +4,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import moe.mizugi.pantsutags.AppRoute
 import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.import.ImportDestination
+import moe.mizugi.pantsutags.services.navigation.NavigationService
+import org.koin.compose.koinInject
 
 @Composable
-fun BottomNavigation(navigateTo: (AppRoute) -> Unit) {
+fun BottomNavigation(navigationService: NavigationService = koinInject()) {
     Row {
         Button(
-            onClick = { navigateTo(GalleryDestination) },
+            onClick = { navigationService.navigateTo(GalleryDestination) },
         ) {
             Text("Gallery")
         }
         Button(
-            onClick = { navigateTo(ImportDestination) },
+            onClick = { navigationService.navigateTo(ImportDestination) },
         ) {
             Text("Import")
         }
