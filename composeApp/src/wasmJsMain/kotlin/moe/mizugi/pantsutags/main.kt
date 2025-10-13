@@ -10,6 +10,6 @@ import kotlinx.browser.document
 @ExperimentalBrowserHistoryApi
 fun main() {
     ComposeViewport(document.body!!) {
-        DesktopApp(onNavHostReady = { it.bindToBrowserNavigation() })
+        App(onNavHostReady = { it.bindToBrowserNavigation() })
     }
 }
