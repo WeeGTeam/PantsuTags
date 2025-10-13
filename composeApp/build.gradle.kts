@@ -80,7 +80,9 @@ kotlin {
             implementation(libs.filekit.coil)
             implementation(libs.filekit.dialogs.compose)
             implementation(libs.koin.compose)
+            implementation(libs.kotlin.logging)
             implementation(libs.kotlinx.serialization)
+            implementation(libs.slf4j)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
