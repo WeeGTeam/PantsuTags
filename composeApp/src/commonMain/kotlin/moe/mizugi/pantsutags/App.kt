@@ -13,8 +13,10 @@ import moe.mizugi.pantsutags.imageloader.imageLoaderFactory
 import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.gallery.galleryRoutes
 import moe.mizugi.pantsutags.presentation.import.importRoutes
+import moe.mizugi.pantsutags.services.navigation.NavigationService
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinMultiplatformApplication
+import org.koin.compose.koinInject
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.koinConfiguration
 
@@ -27,8 +29,9 @@ fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
         modules(appModule)
     }) {
         val navController = rememberNavController()
+        val navigationService = koinInject<NavigationService>()
         MaterialTheme {
-            AppScreen(navController) {
+            AppScreen {
                 NavHost(
                     navController = navController,
                     startDestination = GalleryDestination,
@@ -42,6 +45,7 @@ fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
         }
         LaunchedEffect(navController) {
             onNavHostReady(navController)
+            navigationService.setNavController(navController)
         }
     }
 }
