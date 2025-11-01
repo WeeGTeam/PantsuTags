@@ -45,8 +45,8 @@ fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
             }
         }
         LaunchedEffect(navController) {
-            onNavHostReady(navController)
             navigationService.setNavController(navController)
+            onNavHostReady(navController)
         }
     }
 }
