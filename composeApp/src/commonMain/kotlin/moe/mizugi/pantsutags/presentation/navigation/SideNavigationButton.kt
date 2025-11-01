@@ -1,5 +1,6 @@
 package moe.mizugi.pantsutags.presentation.navigation
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -19,6 +20,7 @@ import org.koin.compose.koinInject
 @Composable
 fun SideNavigationButton(
     appRoute: AppRoute,
+    isExpanded: Boolean = true,
     height: Dp = 50.dp,
     navigationService: NavigationService = koinInject(),
 ) {
@@ -39,11 +41,15 @@ fun SideNavigationButton(
                 contentDescription = null,
                 modifier = Modifier.fillMaxHeight().padding(end = 0.dp)
             )
-            Text(
-                appRoute.name,
-                fontSize = 20.sp,
-                modifier = Modifier.fillMaxWidth().padding(start = 10.dp).weight(1f),
-            )
+            AnimatedContent(targetState = isExpanded) { targetState ->
+                if (targetState) {
+                    Text(
+                        appRoute.name,
+                        fontSize = 20.sp,
+                        modifier = Modifier.fillMaxWidth().padding(start = 10.dp).weight(1f),
+                    )
+                }
+            }
         }
     }
 }
