@@ -5,15 +5,21 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.compose.currentBackStackEntryAsState
 import moe.mizugi.pantsutags.AppRoute
+import moe.mizugi.pantsutags.presentation.theme.LocalSideNavigationColor
 import moe.mizugi.pantsutags.services.navigation.NavigationService
 import org.koin.compose.koinInject
 
@@ -24,8 +30,16 @@ fun SideNavigationButton(
     height: Dp = 50.dp,
     navigationService: NavigationService = koinInject(),
 ) {
+    val navController by navigationService.getNavController()
+    val isCurrentRoute = navController?.currentBackStackEntryAsState()?.value
+        ?.destination?.hierarchy?.any { it.hasRoute(appRoute::class) }
+        ?: false
     Button(
         onClick = { navigationService.navigateTo(appRoute) },
+        colors = ButtonDefaults.buttonColors().copy(
+            containerColor = if (isCurrentRoute) LocalSideNavigationColor.current.buttonSelected else LocalSideNavigationColor.current.button,
+            contentColor = if (isCurrentRoute) LocalSideNavigationColor.current.buttonContentSelected else LocalSideNavigationColor.current.buttonContent
+        ),
         modifier = Modifier.fillMaxWidth().height(height),
         shape = RoundedCornerShape(0.dp),
         border = BorderStroke(1.dp, Color.Black),
@@ -35,7 +49,6 @@ fun SideNavigationButton(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start
         ) {
-
             Icon(
                 appRoute.icon,
                 contentDescription = null,
