@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -30,7 +31,7 @@ import org.koin.compose.koinInject
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.koinConfiguration
 
-@OptIn(KoinExperimentalAPI::class)
+@OptIn(KoinExperimentalAPI::class, ExperimentalComposeUiApi::class)
 @Composable
 @Preview
 fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
@@ -45,7 +46,12 @@ fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
         ) {
             AppScreen {
                 NavHost(
-                    modifier = Modifier.fillMaxSize().padding(5.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp)
+                        .onMouseBackEvent {
+                            navigationService.navigateBack()
+                        },
                     navController = navController,
                     startDestination = GalleryDestination(),
                     enterTransition = { EnterTransition.None },
@@ -64,3 +70,5 @@ fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
         }
     }
 }
+
+expect fun Modifier.onMouseBackEvent(function: () -> Unit): Modifier;
