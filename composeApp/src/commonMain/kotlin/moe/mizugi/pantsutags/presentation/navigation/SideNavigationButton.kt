@@ -16,15 +16,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.serialization.InternalSerializationApi
-import kotlinx.serialization.serializer
 import moe.mizugi.pantsutags.TabRoute
 import moe.mizugi.pantsutags.presentation.theme.LocalSideNavigationColor
 import moe.mizugi.pantsutags.services.navigation.NavigationService
+import moe.mizugi.pantsutags.services.navigation.containsTabRoute
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
-@OptIn(InternalSerializationApi::class)
 @Composable
 fun SideNavigationButton(
     tabRoute: TabRoute,
@@ -33,9 +31,8 @@ fun SideNavigationButton(
     navigationService: NavigationService = koinInject(),
 ) {
     val navController by navigationService.getNavController()
-    val isCurrentRoute = navController?.currentBackStack?.collectAsState()?.value
-        ?.any { it.destination.route?.startsWith(tabRoute::class.serializer().descriptor.serialName) ?: false }
-        ?: false
+    val isCurrentRoute =
+        navController?.currentBackStack?.collectAsState()?.value?.containsTabRoute(tabRoute::class) ?: false
     Button(
         onClick = { navigationService.navigateTo(tabRoute) },
         colors = ButtonDefaults.buttonColors().copy(

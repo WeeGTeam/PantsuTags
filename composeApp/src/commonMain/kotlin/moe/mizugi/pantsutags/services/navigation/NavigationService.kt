@@ -3,6 +3,7 @@ package moe.mizugi.pantsutags.services.navigation
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
+import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.navOptions
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -10,6 +11,7 @@ import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.serializer
 import moe.mizugi.pantsutags.AppRoute
 import moe.mizugi.pantsutags.TabRoute
+import kotlin.reflect.KClass
 
 private val logger = KotlinLogging.logger {}
 
@@ -69,3 +71,10 @@ class NavigationService {
         } ?: logger.error { "NavController is not set" }
     }
 }
+
+fun <T : TabRoute> List<NavBackStackEntry>.containsTabRoute(tabRouteClass: KClass<T>): Boolean =
+    any { it.isTabRoute(tabRouteClass) }
+
+@OptIn(InternalSerializationApi::class)
+fun <T : TabRoute> NavBackStackEntry.isTabRoute(tabRouteClass: KClass<T>): Boolean =
+    destination.route?.startsWith(tabRouteClass.serializer().descriptor.serialName) ?: false
