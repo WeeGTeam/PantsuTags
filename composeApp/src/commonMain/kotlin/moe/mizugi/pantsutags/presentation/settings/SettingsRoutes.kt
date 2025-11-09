@@ -1,7 +1,7 @@
-package moe.mizugi.pantsutags.presentation.import
+package moe.mizugi.pantsutags.presentation.settings
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddPhotoAlternate
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
@@ -10,17 +10,17 @@ import kotlinx.serialization.Serializable
 import moe.mizugi.pantsutags.TabRoute
 
 @Serializable
-@SerialName("import")
-class ImportDestination() : TabRoute() {
+@SerialName("settings")
+class SettingsDestination() : TabRoute() {
     override val displayName: String = DISPLAY_NAME
     override val icon: ImageVector get() = ICON
 
     companion object {
-        const val DISPLAY_NAME: String = "Import"
-        val ICON: ImageVector = Icons.Default.AddPhotoAlternate
+        const val DISPLAY_NAME: String = "Settings"
+        val ICON: ImageVector = Icons.Default.Settings
     }
 }
 
-fun NavGraphBuilder.importRoutes() {
-    composable<ImportDestination> { ImportScreen() }
+fun NavGraphBuilder.settingsRoutes() {
+    composable<SettingsDestination> { SettingsScreen() }
 }

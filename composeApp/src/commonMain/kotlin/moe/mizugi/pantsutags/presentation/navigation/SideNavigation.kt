@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.import.ImportDestination
+import moe.mizugi.pantsutags.presentation.settings.SettingsDestination
 import moe.mizugi.pantsutags.presentation.theme.LocalSideNavigationColor
 import moe.mizugi.pantsutags.presentation.theme.darkNavigationColors
 import moe.mizugi.pantsutags.presentation.theme.lightNavigationColors
@@ -51,8 +52,9 @@ fun SideNavigation(minWidth: Dp = 50.dp, maxWith: Dp = 220.dp) {
                     .clickable { isExpanded = !isExpanded },
                 tint = LocalSideNavigationColor.current.buttonContent
             )
-            SideNavigationButton(GalleryDestination, isExpanded = isExpanded)
-            SideNavigationButton(ImportDestination, isExpanded = isExpanded)
+            SideNavigationButton(GalleryDestination(), isExpanded = isExpanded)
+            SideNavigationButton(ImportDestination(), isExpanded = isExpanded)
+            SideNavigationButton(SettingsDestination(), isExpanded = isExpanded)
         }
     }
 }

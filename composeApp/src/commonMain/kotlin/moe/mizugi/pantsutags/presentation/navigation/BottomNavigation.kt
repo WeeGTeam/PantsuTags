@@ -6,6 +6,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.import.ImportDestination
+import moe.mizugi.pantsutags.presentation.settings.SettingsDestination
 import moe.mizugi.pantsutags.services.navigation.NavigationService
 import org.koin.compose.koinInject
 
@@ -13,14 +14,19 @@ import org.koin.compose.koinInject
 fun BottomNavigation(navigationService: NavigationService = koinInject()) {
     Row {
         Button(
-            onClick = { navigationService.navigateTo(GalleryDestination) },
+            onClick = { navigationService.navigateTo(GalleryDestination()) },
         ) {
-            Text("Gallery")
+            Text(GalleryDestination.DISPLAY_NAME)
         }
         Button(
-            onClick = { navigationService.navigateTo(ImportDestination) },
+            onClick = { navigationService.navigateTo(ImportDestination()) },
         ) {
-            Text("Import")
+            Text(ImportDestination.DISPLAY_NAME)
+        }
+        Button(
+            onClick = { navigationService.navigateTo(SettingsDestination()) },
+        ) {
+            Text(SettingsDestination.DISPLAY_NAME)
         }
     }
 }

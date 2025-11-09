@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -17,7 +18,9 @@ import coil3.compose.setSingletonImageLoaderFactory
 import moe.mizugi.pantsutags.imageloader.imageLoaderFactory
 import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.gallery.galleryRoutes
+import moe.mizugi.pantsutags.presentation.image.imageRoutes
 import moe.mizugi.pantsutags.presentation.import.importRoutes
+import moe.mizugi.pantsutags.presentation.settings.settingsRoutes
 import moe.mizugi.pantsutags.presentation.theme.DarkColorScheme
 import moe.mizugi.pantsutags.presentation.theme.LightColorScheme
 import moe.mizugi.pantsutags.services.navigation.NavigationService
@@ -28,7 +31,7 @@ import org.koin.compose.koinInject
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.koinConfiguration
 
-@OptIn(KoinExperimentalAPI::class)
+@OptIn(KoinExperimentalAPI::class, ExperimentalComposeUiApi::class)
 @Composable
 @Preview
 fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
@@ -43,14 +46,21 @@ fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
         ) {
             AppScreen {
                 NavHost(
-                    modifier = Modifier.fillMaxSize().padding(5.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(5.dp)
+                        .onMouseBackEvent {
+                            navigationService.navigateBack()
+                        },
                     navController = navController,
-                    startDestination = GalleryDestination,
+                    startDestination = GalleryDestination(),
                     enterTransition = { EnterTransition.None },
                     exitTransition = { ExitTransition.None },
                 ) {
                     galleryRoutes()
+                    imageRoutes()
                     importRoutes()
+                    settingsRoutes()
                 }
             }
         }
@@ -60,3 +70,5 @@ fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
         }
     }
 }
+
+expect fun Modifier.onMouseBackEvent(function: () -> Unit): Modifier;
