@@ -1,0 +1,5 @@
+<resources>
+    <string name="tab_route_name_gallery">Gallery</string>
+    <string name="tab_route_name_import">Import</string>
+    <string name="tab_route_name_settings">Settings</string>
+</resources>

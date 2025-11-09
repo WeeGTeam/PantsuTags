@@ -21,6 +21,7 @@ import kotlinx.serialization.serializer
 import moe.mizugi.pantsutags.TabRoute
 import moe.mizugi.pantsutags.presentation.theme.LocalSideNavigationColor
 import moe.mizugi.pantsutags.services.navigation.NavigationService
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @OptIn(InternalSerializationApi::class)
@@ -58,7 +59,7 @@ fun SideNavigationButton(
             AnimatedContent(targetState = isExpanded) { targetState ->
                 if (targetState) {
                     Text(
-                        tabRoute.displayName,
+                        stringResource(tabRoute.displayName),
                         fontSize = 20.sp,
                         modifier = Modifier.fillMaxWidth().padding(start = 10.dp).weight(1f),
                     )

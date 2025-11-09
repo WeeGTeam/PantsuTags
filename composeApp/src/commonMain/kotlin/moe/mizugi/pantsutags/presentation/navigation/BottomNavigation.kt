@@ -8,6 +8,7 @@ import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.import.ImportDestination
 import moe.mizugi.pantsutags.presentation.settings.SettingsDestination
 import moe.mizugi.pantsutags.services.navigation.NavigationService
+import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 
 @Composable
@@ -16,17 +17,17 @@ fun BottomNavigation(navigationService: NavigationService = koinInject()) {
         Button(
             onClick = { navigationService.navigateTo(GalleryDestination()) },
         ) {
-            Text(GalleryDestination.DISPLAY_NAME)
+            Text(stringResource(GalleryDestination.DISPLAY_NAME))
         }
         Button(
             onClick = { navigationService.navigateTo(ImportDestination()) },
         ) {
-            Text(ImportDestination.DISPLAY_NAME)
+            Text(stringResource(ImportDestination.DISPLAY_NAME))
         }
         Button(
             onClick = { navigationService.navigateTo(SettingsDestination()) },
         ) {
-            Text(SettingsDestination.DISPLAY_NAME)
+            Text(stringResource(SettingsDestination.DISPLAY_NAME))
         }
     }
 }

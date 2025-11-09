@@ -8,15 +8,18 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import moe.mizugi.pantsutags.TabRoute
+import org.jetbrains.compose.resources.StringResource
+import pantsutags.composeapp.generated.resources.Res
+import pantsutags.composeapp.generated.resources.tab_route_name_import
 
 @Serializable
 @SerialName("import")
 class ImportDestination() : TabRoute() {
-    override val displayName: String = DISPLAY_NAME
+    override val displayName: StringResource get() = DISPLAY_NAME
     override val icon: ImageVector get() = ICON
 
     companion object {
-        const val DISPLAY_NAME: String = "Import"
+        val DISPLAY_NAME: StringResource = Res.string.tab_route_name_import
         val ICON: ImageVector = Icons.Default.AddPhotoAlternate
     }
 }
