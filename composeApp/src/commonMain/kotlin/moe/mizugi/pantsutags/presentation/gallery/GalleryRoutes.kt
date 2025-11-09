@@ -8,15 +8,18 @@ import androidx.navigation.compose.composable
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import moe.mizugi.pantsutags.TabRoute
+import org.jetbrains.compose.resources.StringResource
+import pantsutags.composeapp.generated.resources.Res
+import pantsutags.composeapp.generated.resources.tab_route_name_gallery
 
 @Serializable
 @SerialName("gallery")
 class GalleryDestination() : TabRoute() {
-    override val displayName: String = DISPLAY_NAME
+    override val displayName: StringResource get() = DISPLAY_NAME
     override val icon: ImageVector get() = ICON
 
     companion object {
-        const val DISPLAY_NAME: String = "Gallery"
+        val DISPLAY_NAME: StringResource = Res.string.tab_route_name_gallery
         val ICON: ImageVector = Icons.Default.PhotoLibrary
     }
 }
