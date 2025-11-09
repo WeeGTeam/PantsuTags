@@ -17,7 +17,9 @@ import coil3.compose.setSingletonImageLoaderFactory
 import moe.mizugi.pantsutags.imageloader.imageLoaderFactory
 import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.gallery.galleryRoutes
+import moe.mizugi.pantsutags.presentation.image.imageRoutes
 import moe.mizugi.pantsutags.presentation.import.importRoutes
+import moe.mizugi.pantsutags.presentation.settings.settingsRoutes
 import moe.mizugi.pantsutags.presentation.theme.DarkColorScheme
 import moe.mizugi.pantsutags.presentation.theme.LightColorScheme
 import moe.mizugi.pantsutags.services.navigation.NavigationService
@@ -45,12 +47,14 @@ fun App(onNavHostReady: suspend (NavController) -> Unit = {}) {
                 NavHost(
                     modifier = Modifier.fillMaxSize().padding(5.dp),
                     navController = navController,
-                    startDestination = GalleryDestination,
+                    startDestination = GalleryDestination(),
                     enterTransition = { EnterTransition.None },
                     exitTransition = { ExitTransition.None },
                 ) {
                     galleryRoutes()
+                    imageRoutes()
                     importRoutes()
+                    settingsRoutes()
                 }
             }
         }

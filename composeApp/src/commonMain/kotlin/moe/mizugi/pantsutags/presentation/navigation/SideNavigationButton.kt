@@ -9,33 +9,34 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavDestination.Companion.hierarchy
-import androidx.navigation.compose.currentBackStackEntryAsState
-import moe.mizugi.pantsutags.AppRoute
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.serializer
+import moe.mizugi.pantsutags.TabRoute
 import moe.mizugi.pantsutags.presentation.theme.LocalSideNavigationColor
 import moe.mizugi.pantsutags.services.navigation.NavigationService
 import org.koin.compose.koinInject
 
+@OptIn(InternalSerializationApi::class)
 @Composable
 fun SideNavigationButton(
-    appRoute: AppRoute,
+    tabRoute: TabRoute,
     isExpanded: Boolean = true,
     height: Dp = 50.dp,
     navigationService: NavigationService = koinInject(),
 ) {
     val navController by navigationService.getNavController()
-    val isCurrentRoute = navController?.currentBackStackEntryAsState()?.value
-        ?.destination?.hierarchy?.any { it.hasRoute(appRoute::class) }
+    val isCurrentRoute = navController?.currentBackStack?.collectAsState()?.value
+        ?.any { it.destination.route?.startsWith(tabRoute::class.serializer().descriptor.serialName) ?: false }
         ?: false
     Button(
-        onClick = { navigationService.navigateTo(appRoute) },
+        onClick = { navigationService.navigateTo(tabRoute) },
         colors = ButtonDefaults.buttonColors().copy(
             containerColor = if (isCurrentRoute) LocalSideNavigationColor.current.buttonSelected else LocalSideNavigationColor.current.button,
             contentColor = if (isCurrentRoute) LocalSideNavigationColor.current.buttonContentSelected else LocalSideNavigationColor.current.buttonContent
@@ -50,14 +51,14 @@ fun SideNavigationButton(
             horizontalArrangement = Arrangement.Start
         ) {
             Icon(
-                appRoute.icon,
+                tabRoute.icon,
                 contentDescription = null,
                 modifier = Modifier.fillMaxHeight().padding(end = 0.dp)
             )
             AnimatedContent(targetState = isExpanded) { targetState ->
                 if (targetState) {
                     Text(
-                        appRoute.name,
+                        tabRoute.displayName,
                         fontSize = 20.sp,
                         modifier = Modifier.fillMaxWidth().padding(start = 10.dp).weight(1f),
                     )
