@@ -21,7 +21,7 @@ val DarkColorScheme = darkColorScheme(
     onSurface = Color(255, 255, 255),
 )
 
-val LocalSideNavigationColor = staticCompositionLocalOf { lightNavigationColors() }
+val LocalSideNavigationColor = staticCompositionLocalOf { lightSideNavigationColors() }
 
 data class SideNavigationColors(
     val background: Color,
@@ -31,7 +31,7 @@ data class SideNavigationColors(
     val buttonContentSelected: Color,
 )
 
-fun lightNavigationColors(): SideNavigationColors =
+fun lightSideNavigationColors(): SideNavigationColors =
     SideNavigationColors(
         background = Color(43, 45, 48, 255),
         button = Color(43, 45, 48, 255),
@@ -40,7 +40,7 @@ fun lightNavigationColors(): SideNavigationColors =
         buttonContentSelected = Color(255, 0, 255),
     )
 
-fun darkNavigationColors(): SideNavigationColors =
+fun darkSideNavigationColors(): SideNavigationColors =
     SideNavigationColors(
         background = Color(33, 35, 38, 255),
         button = Color(53, 55, 58, 255),

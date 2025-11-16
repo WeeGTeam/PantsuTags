@@ -19,8 +19,8 @@ import moe.mizugi.pantsutags.presentation.gallery.GalleryDestination
 import moe.mizugi.pantsutags.presentation.import.ImportDestination
 import moe.mizugi.pantsutags.presentation.settings.SettingsDestination
 import moe.mizugi.pantsutags.presentation.theme.LocalSideNavigationColor
-import moe.mizugi.pantsutags.presentation.theme.darkNavigationColors
-import moe.mizugi.pantsutags.presentation.theme.lightNavigationColors
+import moe.mizugi.pantsutags.presentation.theme.darkSideNavigationColors
+import moe.mizugi.pantsutags.presentation.theme.lightSideNavigationColors
 
 @Composable
 fun SideNavigation(minWidth: Dp = 50.dp, maxWith: Dp = 220.dp) {
@@ -32,7 +32,7 @@ fun SideNavigation(minWidth: Dp = 50.dp, maxWith: Dp = 220.dp) {
     )
 
     CompositionLocalProvider(
-        LocalSideNavigationColor provides if (isSystemInDarkTheme()) darkNavigationColors() else lightNavigationColors()
+        LocalSideNavigationColor provides if (isSystemInDarkTheme()) darkSideNavigationColors() else lightSideNavigationColors()
     ) {
         Column(
             modifier = Modifier
