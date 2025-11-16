@@ -48,3 +48,31 @@ fun darkSideNavigationColors(): SideNavigationColors =
         buttonContent = Color(255, 185, 255, 255),
         buttonContentSelected = Color(0, 0, 0),
     )
+
+val LocalBottomNavigationColor = staticCompositionLocalOf { lightBottomNavigationColors() }
+
+data class BottomNavigationColors(
+    val background: Color,
+    val button: Color,
+    val buttonSelected: Color,
+    val buttonContent: Color,
+    val buttonContentSelected: Color,
+)
+
+fun lightBottomNavigationColors(): BottomNavigationColors =
+    BottomNavigationColors(
+        background = Color(255, 230, 255),
+        button = Color.Transparent,
+        buttonSelected = Color(255, 170, 255),
+        buttonContent = Color(200, 0, 200),
+        buttonContentSelected = Color(150, 0, 150),
+    )
+
+fun darkBottomNavigationColors(): BottomNavigationColors =
+    BottomNavigationColors(
+        background = Color(33, 35, 38),
+        button = Color.Transparent,
+        buttonSelected = Color(255, 185, 255),
+        buttonContent = Color(255, 185, 255),
+        buttonContentSelected = Color(0, 0, 0),
+    )
