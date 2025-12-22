@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlinxSerialization)
+    alias(libs.plugins.openApiGenerator)
 }
 
 kotlin {
@@ -140,4 +141,15 @@ compose.desktop {
             packageVersion = "1.0.0"
         }
     }
+}
+
+openApiGenerate {
+    generatorName.set("kotlin")
+    library.set("multiplatform")
+    inputSpec.set("${project.rootDir}/openapi.yaml")
+    outputDir.set("${layout.buildDirectory.get()}/generated/kotlin")
+    apiPackage.set("moe.mizugi.pantsutags.api")
+    invokerPackage.set("moe.mizugi.pantsutags.api.invoker")
+    modelPackage.set("moe.mizugi.pantsutags.api.model")
+    configOptions.put("dateLibrary", "kotlinx-datetime")
 }

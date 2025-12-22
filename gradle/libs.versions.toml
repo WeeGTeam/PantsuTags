@@ -22,6 +22,7 @@ kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.9.0"
 ktor = "3.3.3"
 multiplatform-paths = "0.2.2"
+openApiGenerator = "7.17.0"
 slf4j = "2.0.17"
 
 [libraries]
@@ -58,3 +59,4 @@ composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "composeMul
 composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinxSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+openApiGenerator = { id = "org.openapi.generator", version.ref = "openApiGenerator" }
