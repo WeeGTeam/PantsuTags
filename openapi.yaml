@@ -1,0 +1,91 @@
+openapi: 3.1.0
+info:
+  title: pantsu_server
+  description: ''
+  license:
+    identifier: ''
+    name: ''
+  version: 0.1.0
+paths:
+  /image/import:
+    post:
+      operationId: import
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ImageImport'
+        required: true
+      responses:
+        '200':
+          description: Image import successful
+          content:
+            text/plain:
+              schema:
+                type: string
+        '500':
+          description: Image import failed
+          content:
+            text/plain:
+              schema:
+                type: integer
+                format: int32
+                minimum: 0
+  /image/tags:
+    get:
+      operationId: dummy_get_tags
+      responses: { }
+  /image/{id}:
+    get:
+      operationId: get_image
+      parameters:
+        - name: id
+          in: path
+          description: Image id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Image file (png or jpg)
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '500':
+          description: Image file load failed
+  /image/{id}/thumbnail:
+    get:
+      operationId: get_image_thumbnail
+      parameters:
+        - name: id
+          in: path
+          description: Image id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Image thumbnail file (png or jpg)
+          content:
+            application/octet-stream:
+              schema:
+                type: string
+                format: binary
+        '500':
+          description: Image file load failed
+components:
+  schemas:
+    ImageImport:
+      type: object
+      required:
+        - imageFile
+        - imageId
+      properties:
+        imageFile:
+          type: string
+          format: binary
+          contentMediaType: application/octet-stream
+        imageId:
+          type: string
