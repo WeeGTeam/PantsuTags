@@ -83,16 +83,15 @@ openApiGenerate {
     modelPackage.set("moe.mizugi.pantsutags.api.generated.model")
     typeMappings.set(
         mapOf(
-            "binary" to "kotlin.ByteArray"
+            "string+binary" to "kotlin.ByteArray"
         )
     )
     configOptions.set(
         mapOf(
-            "dateLibrary" to "string",
+            "dateLibrary" to "kotlinx-datetime",
             "enumPropertyNaming" to "UPPERCASE",
             "library" to "multiplatform",
             "serializationLibrary" to "kotlinx_serialization",
-            "mapFileBinaryToByteArray" to "true"
         )
     )
 }
