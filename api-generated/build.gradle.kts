@@ -112,6 +112,6 @@ kotlin.sourceSets.named("commonTest") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/test/kotlin"))
 }
 
-tasks.matching { it.name.startsWith("compileKotlin") }.configureEach {
+tasks.matching { it.name.startsWith("compile") }.configureEach {
     dependsOn("openApiGenerate")
 }
