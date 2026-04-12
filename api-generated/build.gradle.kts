@@ -96,7 +96,8 @@ openApiGenerate {
     )
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
+    dependsOn("openApiGenerate")
     compilerOptions {
         freeCompilerArgs.addAll(
             "-opt-in=kotlin.time.ExperimentalTime"
@@ -112,6 +113,3 @@ kotlin.sourceSets.named("commonTest") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/test/kotlin"))
 }
 
-tasks.matching { it.name.startsWith("compile") }.configureEach {
-    dependsOn("openApiGenerate")
-}
