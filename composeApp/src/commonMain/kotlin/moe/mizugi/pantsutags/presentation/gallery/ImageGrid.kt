@@ -15,12 +15,17 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
+import moe.mizugi.pantsutags.api.repository.ImageDownloadRepository
 import moe.mizugi.pantsutags.presentation.image.ImageViewDestination
 import moe.mizugi.pantsutags.services.navigation.NavigationService
 import org.koin.compose.koinInject
 
 @Composable
-fun ImageGrid(navigationService: NavigationService = koinInject()) {
+fun ImageGrid(
+    imageIds: List<String>,
+    imageDownloadRepository: ImageDownloadRepository = koinInject(),
+    navigationService: NavigationService = koinInject(),
+) {
     val lazyGridState = rememberLazyGridState()
     LazyVerticalGrid(
         columns = GridCells.Adaptive(500.dp),
@@ -31,29 +36,30 @@ fun ImageGrid(navigationService: NavigationService = koinInject()) {
         item(span = { GridItemSpan(maxCurrentLineSpan) }) {
             Text("LazyVerticalGrid")
         }
-        items(50, { it }) { index ->
-            println("ImageGrid: $index")
-            val url = when (index % 5) {
-                0 -> "https://cdn.donmai.us/original/29/e8/__rurudo_lion_indie_virtual_youtuber_drawn_by_yunmi_0527__29e8eaf6b6e57927134b4fb21e5816d6.jpg"
-                1 -> "https://img4.gelbooru.com//samples/47/15/sample_47159a3160887bf69236433c9803fe87.jpg"
-                2 -> "https://img4.gelbooru.com//samples/a2/c8/sample_a2c8d0087f224ce5e36aa55de21c2588.jpg"
-                3 -> "https://img4.gelbooru.com//samples/09/a4/sample_09a411e7be3cece43c644fd792a64f13.jpg"
-                else -> "https://img4.gelbooru.com//images/81/fb/81fb01d5dfac52340a406e6622178176.png"
-            }
+        items(imageIds.size, { imageIds[it] }) { index ->
+            val imageId = imageIds[index]
+            println("ImageGrid: index: $index, ImageId: $imageId")
+            val thumbnailUrl = imageDownloadRepository.getThumbnailImageUrl(imageId)
             AsyncImage(
                 model = ImageRequest.Builder(LocalPlatformContext.current)
-                    .data(url)
-                    .memoryCacheKey(url)
-                    .diskCacheKey(url)
+                    .data(thumbnailUrl)
+                    .memoryCacheKey(thumbnailUrl)
+                    .diskCacheKey(thumbnailUrl)
                     .size(1000)
                     .build(),
-                contentDescription = "Image $index",
+                contentDescription = "Image $imageId",
                 modifier = Modifier
                     .aspectRatio(1f)
                     .clickable(
                         interactionSource = null,
                         indication = null,
-                        onClick = { navigationService.navigateTo(ImageViewDestination(url)) },
+                        onClick = {
+                            navigationService.navigateTo(
+                                ImageViewDestination(
+                                    imageDownloadRepository.getImageUrl(imageId)
+                                )
+                            )
+                        },
                     ),
                 contentScale = ContentScale.Crop,
             )

@@ -20,4 +20,13 @@ class ImageDownloadRepository(
             Result.failure(e)
         }
     }
+
+    fun getImageUrl(id: String): String {
+        return "$baseUrl/image/$id"
+    }
+
+    fun getThumbnailImageUrl(id: String): String {
+        return "$baseUrl/image/thumbnail/$id"
+    }
+
 }
