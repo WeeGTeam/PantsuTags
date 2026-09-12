@@ -6,6 +6,7 @@ import io.ktor.http.*
 import io.ktor.utils.io.core.*
 import moe.mizugi.pantsutags.api.generated.api.ImageDownloadApi
 import moe.mizugi.pantsutags.api.generated.api.ImageImportApi
+import moe.mizugi.pantsutags.api.generated.api.ImageListApi
 import moe.mizugi.pantsutags.api.model.Image
 
 class PantsuServerRepository(
@@ -14,6 +15,16 @@ class PantsuServerRepository(
 ) {
     private val imageDownloadApi = ImageDownloadApi(baseUrl = baseUrl, httpClient = httpClient)
     private val imageImportApi = ImageImportApi(baseUrl = baseUrl, httpClient = httpClient)
+    private val imageListApi = ImageListApi(baseUrl = baseUrl, httpClient = httpClient)
+
+    suspend fun getImages(): Result<List<String>> {
+        return try {
+            val imageIds = imageListApi.getImages().body()
+            Result.success(imageIds)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 
     suspend fun getImage(id: String): Result<Image> {
         return try {
