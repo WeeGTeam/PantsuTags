@@ -54,11 +54,7 @@ fun ImageGrid(
                         interactionSource = null,
                         indication = null,
                         onClick = {
-                            navigationService.navigateTo(
-                                ImageViewDestination(
-                                    imageDownloadRepository.getImageUrl(imageId)
-                                )
-                            )
+                            navigationService.navigateTo(ImageViewDestination(imageId))
                         },
                     ),
                 contentScale = ContentScale.Crop,
