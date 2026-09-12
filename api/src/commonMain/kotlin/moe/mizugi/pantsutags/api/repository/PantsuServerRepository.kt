@@ -19,7 +19,7 @@ class PantsuServerRepository(
     suspend fun getImage(id: String): Result<Image> {
         return try {
             // Use Ktor directly for binary responses - generated API expects JSON serialization
-            val bytes = imageDownloadApi.getFullImage(id)
+            val bytes = imageDownloadApi.getImage(id)
             Result.success(Image(id = id, data = bytes.body()))
 
         } catch (e: Exception) {
