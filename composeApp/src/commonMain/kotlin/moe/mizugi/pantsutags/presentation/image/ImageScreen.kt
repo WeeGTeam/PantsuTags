@@ -35,7 +35,6 @@ fun ImageScreen(
                 .data(url)
                 .memoryCacheKey(url)
                 .diskCacheKey(url)
-                .size(1000)
                 .build(),
             contentDescription = "Image $imageId",
             modifier = Modifier.fillMaxSize(),
