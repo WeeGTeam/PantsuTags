@@ -9,10 +9,9 @@ import moe.mizugi.pantsutags.api.generated.api.ImageImportApi
 import moe.mizugi.pantsutags.api.model.Image
 
 class PantsuServerRepository(
-    baseUrl: String = "http://localhost:8000"
+    private val baseUrl: String,
+    private val httpClient: HttpClient,
 ) {
-    private val httpClient = HttpClient()
-    private val baseUrl = baseUrl
     private val imageDownloadApi = ImageDownloadApi(baseUrl = baseUrl, httpClient = httpClient)
     private val imageImportApi = ImageImportApi(baseUrl = baseUrl, httpClient = httpClient)
 

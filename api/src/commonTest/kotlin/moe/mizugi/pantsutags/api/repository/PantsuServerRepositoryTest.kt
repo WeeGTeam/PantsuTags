@@ -1,5 +1,6 @@
 package moe.mizugi.pantsutags.api.repository
 
+import io.ktor.client.*
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertNotNull
@@ -8,13 +9,13 @@ class PantsuServerRepositoryTest {
 
     @Test
     fun testRepositoryCreation() = runTest {
-        val repository = PantsuServerRepository("http://localhost:8000")
+        val repository = PantsuServerRepository("http://localhost:8000", HttpClient())
         assertNotNull(repository)
     }
 
     @Test
     fun testGetImage() = runTest {
-        val repository = PantsuServerRepository("http://localhost:8000")
+        val repository = PantsuServerRepository("http://localhost:8000", HttpClient())
         val result = repository.getImage("3b6368639f3e17fa")
         // Result will fail since server isn't running, but we're testing the call works
         assertNotNull(result)
@@ -22,7 +23,7 @@ class PantsuServerRepositoryTest {
 
     @Test
     fun testUploadImage() = runTest {
-        val repository = PantsuServerRepository("http://localhost:8000")
+        val repository = PantsuServerRepository("http://localhost:8000", HttpClient())
         val result = repository.getImage("3b6368639f3e17fa")
         val data = result.getOrThrow().data
         data[500] = 42
