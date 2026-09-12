@@ -1,6 +1,6 @@
 package moe.mizugi.pantsutags.presentation.settings
 
-import androidx.compose.material3.Text
+import com.composeunstyled.Text
 import androidx.compose.runtime.Composable
 
 @Composable

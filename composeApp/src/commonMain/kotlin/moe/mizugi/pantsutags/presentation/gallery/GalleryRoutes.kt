@@ -1,8 +1,8 @@
 package moe.mizugi.pantsutags.presentation.gallery
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.PhotoLibrary
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.composables.icons.lucide.Images
+import com.composables.icons.lucide.Lucide
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.SerialName
@@ -20,7 +20,7 @@ class GalleryDestination() : TabRoute() {
 
     companion object {
         val DISPLAY_NAME: StringResource = Res.string.tab_route_name_gallery
-        val ICON: ImageVector = Icons.Default.PhotoLibrary
+        val ICON: ImageVector = Lucide.Images
     }
 }
 
