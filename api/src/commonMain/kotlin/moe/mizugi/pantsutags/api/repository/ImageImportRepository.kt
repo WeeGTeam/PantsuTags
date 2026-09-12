@@ -4,38 +4,13 @@ import io.ktor.client.*
 import io.ktor.client.request.forms.*
 import io.ktor.http.*
 import io.ktor.utils.io.core.*
-import moe.mizugi.pantsutags.api.generated.api.ImageDownloadApi
 import moe.mizugi.pantsutags.api.generated.api.ImageImportApi
-import moe.mizugi.pantsutags.api.generated.api.ImageListApi
-import moe.mizugi.pantsutags.api.model.Image
 
-class PantsuServerRepository(
+class ImageImportRepository(
     private val baseUrl: String,
     private val httpClient: HttpClient,
 ) {
-    private val imageDownloadApi = ImageDownloadApi(baseUrl = baseUrl, httpClient = httpClient)
     private val imageImportApi = ImageImportApi(baseUrl = baseUrl, httpClient = httpClient)
-    private val imageListApi = ImageListApi(baseUrl = baseUrl, httpClient = httpClient)
-
-    suspend fun getImages(): Result<List<String>> {
-        return try {
-            val imageIds = imageListApi.getImages().body()
-            Result.success(imageIds)
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
-
-    suspend fun getImage(id: String): Result<Image> {
-        return try {
-            // Use Ktor directly for binary responses - generated API expects JSON serialization
-            val bytes = imageDownloadApi.getImage(id)
-            Result.success(Image(id = id, data = bytes.body()))
-
-        } catch (e: Exception) {
-            Result.failure(e)
-        }
-    }
 
     suspend fun upload(importId: String, data: ByteArray): Result<Unit> {
         return try {
@@ -54,9 +29,5 @@ class PantsuServerRepository(
         } catch (e: Exception) {
             Result.failure(e)
         }
-    }
-
-    fun close() {
-        httpClient.close()
     }
 }

@@ -4,7 +4,9 @@ import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
-import moe.mizugi.pantsutags.api.repository.PantsuServerRepository
+import moe.mizugi.pantsutags.api.repository.ImageDownloadRepository
+import moe.mizugi.pantsutags.api.repository.ImageImportRepository
+import moe.mizugi.pantsutags.api.repository.ImageListRepository
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -27,7 +29,21 @@ val networkModule = module {
     }
     single {
         val backendConfig = get<BackendConfig>(named(Backend.KaniServer))
-        PantsuServerRepository(
+        ImageDownloadRepository(
+            backendConfig.baseUrl,
+            backendConfig.httpClient,
+        )
+    }
+    single {
+        val backendConfig = get<BackendConfig>(named(Backend.KaniServer))
+        ImageImportRepository(
+            backendConfig.baseUrl,
+            backendConfig.httpClient,
+        )
+    }
+    single {
+        val backendConfig = get<BackendConfig>(named(Backend.KaniServer))
+        ImageListRepository(
             backendConfig.baseUrl,
             backendConfig.httpClient,
         )
