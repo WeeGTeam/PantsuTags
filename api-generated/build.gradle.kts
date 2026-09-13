@@ -18,7 +18,6 @@ kotlin {
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -45,7 +44,6 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
-            implementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.android)
@@ -77,6 +75,8 @@ android {
 
 openApiGenerate {
     generatorName.set("kotlin")
+    generateApiTests.set(false)
+    generateModelTests.set(false)
     inputSpec.set("$rootDir/openapi.yaml")
     outputDir.set(layout.buildDirectory.dir("generated/openapi").get().asFile.path)
     packageName.set("moe.mizugi.pantsutags.api.generated")
@@ -107,9 +107,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().con
 
 kotlin.sourceSets.named("commonMain") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/main/kotlin"))
-}
-
-kotlin.sourceSets.named("commonTest") {
-    kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/test/kotlin"))
 }
 
