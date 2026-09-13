@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
@@ -25,7 +26,6 @@ import moe.mizugi.pantsutags.services.navigation.NavigationService
 import moe.mizugi.pantsutags.services.network.Backend
 import moe.mizugi.pantsutags.services.network.BackendConfig
 import moe.mizugi.pantsutags.services.servicesModule
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinMultiplatformApplication
 import org.koin.compose.koinInject
 import org.koin.core.annotation.KoinExperimentalAPI
