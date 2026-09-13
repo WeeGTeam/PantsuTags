@@ -9,7 +9,7 @@ import moe.mizugi.pantsutags.SubRoute
 
 @Serializable
 @SerialName("image-view")
-class ImageViewDestination(val url: String) : SubRoute()
+class ImageViewDestination(val imageId: String) : SubRoute()
 
 
 fun NavGraphBuilder.imageRoutes() {

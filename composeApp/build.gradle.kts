@@ -86,6 +86,8 @@ kotlin {
             implementation(libs.koin.compose)
             implementation(libs.kotlin.logging)
             implementation(libs.kotlinx.serialization)
+            implementation(libs.ktor.client.contentNegotiation)
+            implementation(libs.ktor.serialization.json)
             implementation(libs.slf4j)
         }
         commonTest.dependencies {

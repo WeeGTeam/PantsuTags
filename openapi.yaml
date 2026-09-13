@@ -1,19 +1,34 @@
 openapi: 3.1.0
 info:
-  title: Pantsu Server
+  title: Kani Server
   summary: A image library and sauce lookup service for pantsu
   description: API to import images, filter and download images, manage tags, lookup sources and tags
-  version: 0.1.0
+  version: 0.2.0
 servers:
   - description: localhost
     url: http://localhost:8000
 tags:
+  - name: collection
   - name: imageImport
   - name: imageDownload
   - name: imageList
   - name: imageTag
+  - name: tag
 paths:
   /image/importSession:
+    get:
+      tags:
+        - imageImport
+      operationId: getImportSessions
+      responses:
+        "200":
+          description: import sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImportSessionDTO'
     post:
       tags:
         - imageImport
@@ -24,8 +39,25 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ImportSession'
-
+                $ref: '#/components/schemas/ImportSessionId'
+  /image/importSession/{id}:
+    delete:
+      tags:
+        - imageImport
+      operationId: closeImportSession
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ImportSessionId'
+      responses:
+        "204":
+          description: import session closed
+        "404":
+          description: import session missing
+        "400":
+          description: import session already closed
   /image/import/{id}:
     post:
       tags:
@@ -42,18 +74,22 @@ paths:
         content:
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/ImageImport'
+              $ref: '#/components/schemas/ImageImportDTO'
         required: true
       responses:
         "201":
           description: imported
         "409":
           description: image already exists
-  /image/{id}/full:
+        "404":
+          description: import session missing
+        "400":
+          description: import session closed
+  /image/{id}:
     get:
       tags:
         - imageDownload
-      operationId: getFullImage
+      operationId: getImage
       parameters:
         - in: path
           name: id
@@ -72,9 +108,15 @@ paths:
               schema:
                 type: string
                 format: binary
+          headers:
+            Content-Disposition:
+              description: download filename
+              required: true
+              schema:
+                type: string
         "404":
           description: image not found
-  /image/{id}/thumbnail:
+  /image/thumbnail/{id}:
     get:
       tags:
         - imageDownload
@@ -97,6 +139,12 @@ paths:
               schema:
                 type: string
                 format: binary
+          headers:
+            Content-Disposition:
+              description: download filename
+              required: true
+              schema:
+                type: string
         "404":
           description: image not found
   /image/{id}/tags:
@@ -118,9 +166,39 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ImageTag'
+                  $ref: '#/components/schemas/ImageTagDTO'
         "404":
           description: image not found
+    post:
+      tags:
+        - imageTag
+      operationId: addImageTags
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/ImageId'
+      requestBody:
+        description: adds tags to the image. If a tag does not exist, it is created.
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/NewImageTagDTO'
+        required: true
+      responses:
+        "201":
+          description: all tags of image (including the newly added tags)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImageTagDTO'
+        "400":
+          description: Invalid tag or image id
   /images:
     get:
       tags:
@@ -128,20 +206,69 @@ paths:
       operationId: getImages
       parameters:
         - in: query
-          name: list
-          description: limit search to this list
+          name: collection
+          description: limit search to this collection
           required: false
           schema:
-            type: string
+            $ref: '#/components/schemas/CollectionId'
+        - in: query
+          name: import-session
+          description: limit search to this import session
+          required: false
+          schema:
+            $ref: '#/components/schemas/ImportSessionId'
         - in: query
           name: layout
-          description: limit search to layout type
+          description: limit search to layout type.
           required: false
           schema:
             type: string
-            enum: [ portrait, landscape ]
+            enum: [ portrait, landscape, square ]
+        - in: query
+          name: minw
+          description: limit search to images with minimum width
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: maxw
+          description: limit search to images with maximum width
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: minh
+          description: limit search to images with minimum height
+          required: false
+          schema:
+            type: integer
+        - in: query
+          name: maxh
+          description: limit search to images with maximum height
+          required: false
+          schema:
+            type: integer
         - in: query
           name: tag
+          description: limit search to images with these tags
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TagId'
+        - in: query
+          name: etag
+          description: limit search to images without these tags
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/TagId'
+        - in: query
+          name: sort
+          description: |
+            sort order for results. pattern = "(id|date|resolution)(|:asc|:desc)"
+            omitting ascending or descending results in default sort order (desc).
           required: false
           schema:
             type: array
@@ -155,24 +282,146 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ImageInfo'
+                  $ref: '#/components/schemas/ImageId'
+  /tags:
+    get:
+      tags:
+        - tag
+      operationId: getTags
+      responses:
+        "200":
+          description: Ok
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/TagDTO'
+  /collections:
+    get:
+      tags:
+        - collection
+      operationId: getCollections
+      responses:
+        "200":
+          description: Collections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CollectionDTO'
+    post:
+      tags:
+        - collection
+      operationId: createCollection
+      requestBody:
+        description: collection creation arguments
+        content:
+          application/json:
+            schema:
+              type: string
+              description: collection name
+        required: true
+      responses:
+        "201":
+          description: collection created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CollectionDTO'
+        "409":
+          description: collection already exists
+  /collections/{id}:
+    delete:
+      tags:
+        - collection
+      operationId: deleteCollection
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/CollectionId'
+      responses:
+        "200":
+          description: collection deleted
+  /collections/{id}/images:
+    post:
+      tags:
+        - collection
+      operationId: addImagesToCollection
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/CollectionId'
+      requestBody:
+        description: List of image ids to add to the collection
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ImageId'
+        required: true
+      responses:
+        "200":
+          description: images added to collection
+    delete:
+      tags:
+        - collection
+      operationId: removeImagesFromCollection
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            $ref: '#/components/schemas/CollectionId'
+      requestBody:
+        description: List of image ids to remove from the collection
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ImageId'
+        required: true
+      responses:
+        "200":
+          description: images removed from collection
 components:
   schemas:
-    ImportSession:
+    ImportSessionDTO:
       type: object
       properties:
         id:
           $ref: '#/components/schemas/ImportSessionId'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-07-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-07-01T12:00:00Z"
+        closedAt:
+          type: string
+          format: date-time
+          example: "2023-07-01T12:00:00Z"
       required:
         - id
+        - createdAt
+        - updatedAt
     ImportSessionId:
       type: string
       example: "1234567890"
       pattern: "^[0-9]+$"
     ImageId:
       type: string
-      example: "3b6368639f3e17fa"
-      pattern: "^[0-9a-f]{16}$"
+      example: "123456789"
+      pattern: "^[0-9]+$"
     TagId:
       type: string
       example: "123456789"
@@ -181,22 +430,41 @@ components:
       type: string
       example: "123456789"
       pattern: "^[0-9]+$"
-    ImageTag:
+    CollectionId:
+      type: string
+      example: "123456789"
+      pattern: "^[0-9]+$"
+    NewImageTagDTO:
       type: object
       properties:
-        tagId:
-          $ref: '#/components/schemas/TagId'
-        createdBy:
+        tagType:
+          $ref: '#/components/schemas/TagTypeDTO'
+        tagName:
+          $ref: '#/components/schemas/TagName'
+      required:
+        - tagType
+        - tagName
+    ImageTagDTO:
+      type: object
+      properties:
+        tag:
+          $ref: '#/components/schemas/TagDTO'
+        createdByUser:
           $ref: '#/components/schemas/UserId'
+        createdBySourceSite:
+          $ref: '#/components/schemas/ImageTagSourceSiteDTO'
         createdAt:
           type: string
           format: date-time
           example: "2023-09-20T12:34:56Z"
       required:
-        - tagId
-        - createdBy
+        - tag
         - createdAt
-    ImageImport:
+    ImageTagSourceSiteDTO:
+      type: string
+      enum: [ gelbooru ]
+      example: gelbooru
+    ImageImportDTO:
       type: object
       properties:
         file:
@@ -204,10 +472,48 @@ components:
           format: binary
       required:
         - file
-    ImageInfo:
+    CollectionDTO:
       type: object
       properties:
         id:
-          $ref: '#/components/schemas/ImageId'
+          $ref: '#/components/schemas/CollectionId'
+        name:
+          type: string
+          description: "max length: 60 characters"
+          example: "My Collection"
+        createdBy:
+          $ref: '#/components/schemas/UserId'
+        createdAt:
+          type: string
+          format: date-time
+          example: "2023-07-01T12:00:00Z"
+        updatedAt:
+          type: string
+          format: date-time
+          example: "2023-07-01T12:00:00Z"
       required:
         - id
+        - name
+        - createdBy
+        - createdAt
+        - updatedAt
+    TagDTO:
+      type: object
+      properties:
+        id:
+          $ref: '#/components/schemas/TagId'
+        tagType:
+          $ref: '#/components/schemas/TagTypeDTO'
+        tagName:
+          $ref: '#/components/schemas/TagName'
+      required:
+        - id
+        - tagType
+        - tagName
+    TagName:
+      type: string
+      description: "max length: 40 characters"
+    TagTypeDTO:
+      type: string
+      enum: [ rating, artist, source, character, general ]
+      example: general
