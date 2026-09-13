@@ -1,8 +1,8 @@
 package moe.mizugi.pantsutags.presentation.settings
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.composables.icons.lucide.Lucide
+import com.composables.icons.lucide.Settings
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.SerialName
@@ -20,7 +20,7 @@ class SettingsDestination() : TabRoute() {
 
     companion object {
         val DISPLAY_NAME: StringResource = Res.string.tab_route_name_settings
-        val ICON: ImageVector = Icons.Default.Settings
+        val ICON: ImageVector = Lucide.Settings
     }
 }
 

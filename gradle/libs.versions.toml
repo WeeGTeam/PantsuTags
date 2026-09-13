@@ -7,16 +7,18 @@ androidx-activity = "1.10.1"
 androidx-appcompat = "1.7.1"
 androidx-core = "1.16.0"
 androidx-espresso = "3.6.1"
-androidx-lifecycle = "2.9.1"
-androidx-navigation = "2.9.0"
+androidx-lifecycle = "2.10.0"
+androidx-navigation = "2.9.2"
 androidx-testExt = "1.2.1"
 coil = "3.3.0"
-composeHotReload = "1.0.0-beta04"
-composeMultiplatform = "1.8.2"
+composeHotReload = "1.2.0"
+composeMultiplatform = "1.11.1"
+composeUnstyled = "2.9.0"
 filekit = "0.10.0"
 junit = "4.13.2"
 koin = "4.1.1"
-kotlin = "2.2.0"
+lucideIcons = "1.1.0"
+kotlin = "2.4.10"
 kotlin-logging = "7.0.13"
 kotlinx-coroutines = "1.10.2"
 kotlinx-serialization = "1.9.0"
@@ -38,6 +40,11 @@ androidx-lifecycle-viewmodelCompose = { module = "org.jetbrains.androidx.lifecyc
 androidx-lifecycle-runtimeCompose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "androidx-lifecycle" }
 androidx-navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
+compose-unstyled-theming = { module = "com.composables:composeunstyled-theming", version.ref = "composeUnstyled" }
+compose-unstyled-button = { module = "com.composables:composeunstyled-button", version.ref = "composeUnstyled" }
+compose-unstyled-icon = { module = "com.composables:composeunstyled-icon", version.ref = "composeUnstyled" }
+compose-unstyled-coloredIndication = { module = "com.composables:composeunstyled-colored-indication", version.ref = "composeUnstyled" }
+icons-lucide = { module = "com.composables:icons-lucide", version.ref = "lucideIcons" }
 coil-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 filekit-dialogs-compose = { module = "io.github.vinceglb:filekit-dialogs-compose", version.ref = "filekit" }
 filekit-coil = { module = "io.github.vinceglb:filekit-coil", version.ref = "filekit" }

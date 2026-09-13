@@ -1,8 +1,8 @@
 package moe.mizugi.pantsutags.presentation.import
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddPhotoAlternate
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.composables.icons.lucide.ImagePlus
+import com.composables.icons.lucide.Lucide
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import kotlinx.serialization.SerialName
@@ -20,7 +20,7 @@ class ImportDestination() : TabRoute() {
 
     companion object {
         val DISPLAY_NAME: StringResource = Res.string.tab_route_name_import
-        val ICON: ImageVector = Icons.Default.AddPhotoAlternate
+        val ICON: ImageVector = Lucide.ImagePlus
     }
 }
 

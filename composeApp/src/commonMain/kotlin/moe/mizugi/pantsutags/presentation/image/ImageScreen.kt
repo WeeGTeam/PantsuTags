@@ -2,14 +2,14 @@ package moe.mizugi.pantsutags.presentation.image
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
+import com.composeunstyled.Text
+import moe.mizugi.pantsutags.presentation.components.KaniButton
 import moe.mizugi.pantsutags.services.navigation.NavigationService
 import org.koin.compose.koinInject
 
@@ -22,7 +22,7 @@ fun ImageScreen(
     val url = imageViewDestination.url
     Column {
         Text("Image")
-        Button(onClick = {
+        KaniButton(onClick = {
             navigationService.navigateBack()
         }) {
             Text("Back")
