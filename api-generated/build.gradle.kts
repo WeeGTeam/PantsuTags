@@ -1,24 +1,24 @@
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
-    alias(libs.plugins.androidLibrary)
+    alias(libs.plugins.androidKotlinMultiplatformLibrary)
     alias(libs.plugins.kotlinxSerialization)
     alias(libs.plugins.openApiGenerator)
 }
 
 kotlin {
-    androidTarget {
-        @OptIn(ExperimentalKotlinGradlePluginApi::class)
+    android {
+        namespace = "moe.mizugi.pantsutags.api.generated"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
+        minSdk = libs.versions.android.minSdk.get().toInt()
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_11)
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
     listOf(
-        iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     ).forEach { iosTarget ->
@@ -45,7 +45,6 @@ kotlin {
         commonTest.dependencies {
             implementation(libs.kotlin.test)
             implementation(libs.kotlinx.coroutines.test)
-            implementation("io.kotlintest:kotlintest-runner-junit5:3.4.2")
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.android)
@@ -62,21 +61,10 @@ kotlin {
     }
 }
 
-android {
-    namespace = "moe.mizugi.pantsutags.api.generated"
-    compileSdk = libs.versions.android.compileSdk.get().toInt()
-
-    defaultConfig {
-        minSdk = libs.versions.android.minSdk.get().toInt()
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-}
-
 openApiGenerate {
     generatorName.set("kotlin")
+    generateApiTests.set(false)
+    generateModelTests.set(false)
     inputSpec.set("$rootDir/openapi.yaml")
     outputDir.set(layout.buildDirectory.dir("generated/openapi").get().asFile.path)
     packageName.set("moe.mizugi.pantsutags.api.generated")
@@ -96,6 +84,13 @@ openApiGenerate {
     )
 }
 
+// AGP derives a baseline-profile source directory from the generated sources
+// (build/generated/openapi/src/main/baselineProfiles), so its ART profile tasks
+// read openApiGenerate's output and need the dependency declared explicitly.
+tasks.matching { it.name.contains("ArtProfile") }.configureEach {
+    dependsOn("openApiGenerate")
+}
+
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
     dependsOn("openApiGenerate")
     compilerOptions {
@@ -107,9 +102,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().con
 
 kotlin.sourceSets.named("commonMain") {
     kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/main/kotlin"))
-}
-
-kotlin.sourceSets.named("commonTest") {
-    kotlin.srcDir(layout.buildDirectory.dir("generated/openapi/src/test/kotlin"))
 }
 
