@@ -8,21 +8,19 @@ import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import coil3.request.ImageRequest
-import moe.mizugi.pantsutags.api.repository.ImageDownloadRepository
 import com.composeunstyled.Text
 import moe.mizugi.pantsutags.presentation.components.KaniButton
 import moe.mizugi.pantsutags.services.navigation.NavigationService
 import org.koin.compose.koinInject
+import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
 fun ImageScreen(
-    imageViewDestination: ImageViewDestination,
-    imageDownloadRepository: ImageDownloadRepository = koinInject(),
+    imageViewModel: ImageViewModel = koinViewModel(),
     navigationService: NavigationService = koinInject()
 ) {
-    val imageId = imageViewDestination.imageId
-    val url = imageDownloadRepository.getImageUrl(imageId)
+    val url = imageViewModel.imageUrl
     Column {
         Text("Image")
         KaniButton(onClick = {
@@ -36,7 +34,7 @@ fun ImageScreen(
                 .memoryCacheKey(url)
                 .diskCacheKey(url)
                 .build(),
-            contentDescription = "Image $imageId",
+            contentDescription = "Image ${imageViewModel.imageId}",
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Fit,
         )

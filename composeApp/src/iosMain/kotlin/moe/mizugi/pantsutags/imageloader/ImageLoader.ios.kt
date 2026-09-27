@@ -14,13 +14,13 @@ actual fun ImageLoader.Builder.applyPlatformCache(context: PlatformContext): Ima
         .diskCachePolicy(CachePolicy.ENABLED)
         .memoryCache {
             MemoryCache.Builder()
-                .maxSizePercent(context, 0.0025)
+                .maxSizePercent(context)
                 .build()
         }
         .diskCache {
             DiskCache.Builder()
                 .directory(appCacheDirectory("moe.mizugi.PantsuTags", true).toString().toPath())
-                .maxSizePercent(0.001)
+                .maxSizeBytes(512L * 1024 * 1024) // 512 MB
                 .build()
         }
 }

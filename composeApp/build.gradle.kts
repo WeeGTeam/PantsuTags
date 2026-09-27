@@ -86,6 +86,7 @@ kotlin {
             implementation(libs.filekit.coil)
             implementation(libs.filekit.dialogs.compose)
             implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
             implementation(libs.kotlin.logging)
             implementation(libs.kotlinx.serialization)
             implementation(libs.ktor.client.contentNegotiation)

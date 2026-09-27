@@ -1,23 +1,34 @@
 package moe.mizugi.pantsutags.presentation.gallery
 
-import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
-import moe.mizugi.pantsutags.api.repository.ImageRepository
-import org.koin.compose.koinInject
+import androidx.compose.foundation.layout.Column
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.composeunstyled.Text
+import moe.mizugi.pantsutags.presentation.components.KaniButton
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun GalleryScreen(
-    imageRepository: ImageRepository = koinInject(),
+    viewModel: GalleryViewModel = koinViewModel(),
 ) {
-    var imageIds by rememberSaveable { mutableStateOf<List<String>?>(null) }
-    LaunchedEffect(Unit) {
-        if (imageIds == null) {
-            val result = imageRepository.getImages();
-            imageIds = result.getOrElse { listOf() }
-        }
-    }
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    GalleryContent(uiState, reload = viewModel::load)
+}
 
-    imageIds?.let {
-        ImageGrid(it)
+@Composable
+private fun GalleryContent(
+    uiState: GalleryUiState,
+    reload: () -> Unit,
+) {
+    when (uiState) {
+        GalleryUiState.Loading -> Text("Loading…")
+        is GalleryUiState.Loaded -> ImageGrid(uiState.imageIds)
+        is GalleryUiState.Error -> Column {
+            Text("Could not load images: ${uiState.message}")
+            KaniButton(onClick = reload) {
+                Text("Retry")
+            }
+        }
     }
 }
