@@ -10,7 +10,7 @@ actual fun ImageLoader.Builder.applyPlatformCache(context: PlatformContext): Ima
         .memoryCachePolicy(CachePolicy.ENABLED)
         .memoryCache {
             MemoryCache.Builder()
-                .maxSizePercent(context, 0.0025)
+                .maxSizePercent(context)
                 .build()
         }
 }
